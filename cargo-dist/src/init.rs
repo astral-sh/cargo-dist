@@ -495,6 +495,7 @@ fn get_new_dist_metadata(
             auto_includes: None,
             windows_archive: None,
             unix_archive: None,
+            binaries_in_root: None,
             npm_scope: None,
             npm_package: None,
             checksum: None,
@@ -998,6 +999,7 @@ fn apply_dist_to_metadata(metadata: &mut toml_edit::Item, meta: &DistMetadata) {
         auto_includes,
         windows_archive,
         unix_archive,
+        binaries_in_root,
         npm_scope,
         npm_package,
         checksum,
@@ -1162,6 +1164,13 @@ fn apply_dist_to_metadata(metadata: &mut toml_edit::Item, meta: &DistMetadata) {
         "unix-archive",
         "# The archive format to use for non-windows builds (defaults .tar.xz)\n",
         unix_archive.map(|a| a.ext()),
+    );
+
+    apply_optional_value(
+        table,
+        "binaries-in-root",
+        "# Whether to place binaries in the root of the archive\n",
+        *binaries_in_root,
     );
 
     apply_optional_value(

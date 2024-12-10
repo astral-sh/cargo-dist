@@ -1883,6 +1883,9 @@ impl<'pkg_graph> DistGraphBuilder<'pkg_graph> {
         // (It's hard to strip-prefix zips, so making them both have an extra dir is annoying)
         let with_root = if let ZipStyle::Zip = zip_style {
             None
+        } else if release.config.artifacts.archives.binaries_in_root {
+            // User config override for having the binaries in the root of the archive
+            None
         } else {
             Some(Utf8PathBuf::from(artifact_dir_name.clone()))
         };
