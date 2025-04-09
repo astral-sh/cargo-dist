@@ -191,8 +191,8 @@ download_binary_and_run_installer() {
         "akaikatana-repack-x86_64-pc-windows-msvc.zip")
             _arch="x86_64-pc-windows-msvc"
             _zip_ext=".zip"
-            _bins="akextract.exe akmetadata.exe akrepack.exe"
-            _bins_js_array='"akextract.exe","akmetadata.exe","akrepack.exe"'
+            _bins="akextract.exe akmetadata.exe"
+            _bins_js_array='"akextract.exe","akmetadata.exe"'
             _libs=""
             _libs_js_array=""
             _staticlibs=""
@@ -1500,7 +1500,7 @@ function Install-Binary($install_args) {
   $platforms = @{
     "aarch64-pc-windows-msvc" = @{
       "artifact_name" = "akaikatana-repack-x86_64-pc-windows-msvc.zip"
-      "bins" = @("akextract.exe", "akmetadata.exe", "akrepack.exe")
+      "bins" = @("akextract.exe", "akmetadata.exe")
       "libs" = @()
       "staticlibs" = @()
       "zip_ext" = ".zip"
@@ -1510,7 +1510,7 @@ function Install-Binary($install_args) {
     }
     "x86_64-pc-windows-gnu" = @{
       "artifact_name" = "akaikatana-repack-x86_64-pc-windows-msvc.zip"
-      "bins" = @("akextract.exe", "akmetadata.exe", "akrepack.exe")
+      "bins" = @("akextract.exe", "akmetadata.exe")
       "libs" = @()
       "staticlibs" = @()
       "zip_ext" = ".zip"
@@ -1520,7 +1520,7 @@ function Install-Binary($install_args) {
     }
     "x86_64-pc-windows-msvc" = @{
       "artifact_name" = "akaikatana-repack-x86_64-pc-windows-msvc.zip"
-      "bins" = @("akextract.exe", "akmetadata.exe", "akrepack.exe")
+      "bins" = @("akextract.exe", "akmetadata.exe")
       "libs" = @()
       "staticlibs" = @()
       "zip_ext" = ".zip"
@@ -2146,12 +2146,6 @@ CENSORED (see https://github.com/axodotdev/cargo-dist/issues/1477)  source.tar.g
           "id": "akaikatana-repack-x86_64-pc-windows-msvc-exe-akmetadata",
           "name": "akmetadata",
           "path": "akmetadata.exe",
-          "kind": "executable"
-        },
-        {
-          "id": "akaikatana-repack-x86_64-pc-windows-msvc-exe-akrepack",
-          "name": "akrepack",
-          "path": "akrepack.exe",
           "kind": "executable"
         }
       ],
