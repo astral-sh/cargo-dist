@@ -1219,6 +1219,8 @@ tap = "mistydemeo/homebrew-formulae"
 publish-jobs = ["homebrew"]
 targets = ["x86_64-unknown-linux-gnu", "x86_64-apple-darwin", "x86_64-pc-windows-msvc", "aarch64-apple-darwin"]
 
+[workspace.metadata.dist.binaries]
+x86_64-pc-windows-msvc = ["akextract", "akmetadata"]
 "#
         ))?;
 
