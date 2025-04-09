@@ -241,6 +241,10 @@ unix-archive = ".tar.gz"
 windows-archive = ".tar.gz"
 npm-scope ="@axodotdev"
 
+[workspace.metadata.dist.binaries]
+"*" = ["axolotlsay"]
+x86_64-pc-windows-msvc = ["axlotolsay", "axolotlsayw"]
+
 [package.metadata.wix]
 upgrade-guid = "B36177BE-EA4D-44FB-B05C-EDDABDAA95CA"
 path-guid = "BFD25009-65A4-4D1E-97F1-0030465D90D6"

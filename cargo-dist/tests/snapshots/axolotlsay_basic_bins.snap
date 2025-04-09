@@ -215,8 +215,8 @@ download_binary_and_run_installer() {
         "axolotlsay-x86_64-pc-windows-msvc.tar.gz")
             _arch="x86_64-pc-windows-msvc"
             _zip_ext=".tar.gz"
-            _bins="axolotlsay.exe"
-            _bins_js_array='"axolotlsay.exe"'
+            _bins="axlotolsay.exe axolotlsayw.exe"
+            _bins_js_array='"axlotolsay.exe","axolotlsayw.exe"'
             _libs=""
             _libs_js_array=""
             _staticlibs=""
@@ -1578,7 +1578,7 @@ function Install-Binary($install_args) {
     }
     "aarch64-pc-windows-msvc" = @{
       "artifact_name" = "axolotlsay-x86_64-pc-windows-msvc.tar.gz"
-      "bins" = @("axolotlsay.exe")
+      "bins" = @("axlotolsay.exe", "axolotlsayw.exe")
       "libs" = @()
       "staticlibs" = @()
       "zip_ext" = ".tar.gz"
@@ -1598,7 +1598,7 @@ function Install-Binary($install_args) {
     }
     "x86_64-pc-windows-msvc" = @{
       "artifact_name" = "axolotlsay-x86_64-pc-windows-msvc.tar.gz"
-      "bins" = @("axolotlsay.exe")
+      "bins" = @("axlotolsay.exe", "axolotlsayw.exe")
       "libs" = @()
       "staticlibs" = @()
       "zip_ext" = ".tar.gz"
@@ -2667,7 +2667,9 @@ install(false);
   "packages": {
     "": {
       "bin": {
-        "axolotlsay": "run-axolotlsay.js"
+        "axlotolsay": "run-axlotolsay.js",
+        "axolotlsay": "run-axolotlsay.js",
+        "axolotlsayw": "run-axolotlsayw.js"
       },
       "dependencies": {
         "axios": "^1.7.9",
@@ -3383,7 +3385,9 @@ install(false);
   "artifactDownloadUrl": "https://github.com/axodotdev/axolotlsay/releases/download/v0.2.2",
   "author": "axodotdev <hello@axo.dev>",
   "bin": {
-    "axolotlsay": "run-axolotlsay.js"
+    "axlotolsay": "run-axlotolsay.js",
+    "axolotlsay": "run-axolotlsay.js",
+    "axolotlsayw": "run-axolotlsayw.js"
   },
   "dependencies": {
     "axios": "^1.7.9",
@@ -3432,7 +3436,8 @@ install(false);
     "aarch64-pc-windows-msvc": {
       "artifactName": "axolotlsay-x86_64-pc-windows-msvc.tar.gz",
       "bins": {
-        "axolotlsay": "axolotlsay.exe"
+        "axlotolsay": "axlotolsay.exe",
+        "axolotlsayw": "axolotlsayw.exe"
       },
       "zipExt": ".tar.gz"
     },
@@ -3460,7 +3465,8 @@ install(false);
     "x86_64-pc-windows-msvc": {
       "artifactName": "axolotlsay-x86_64-pc-windows-msvc.tar.gz",
       "bins": {
-        "axolotlsay": "axolotlsay.exe"
+        "axlotolsay": "axlotolsay.exe",
+        "axolotlsayw": "axolotlsayw.exe"
       },
       "zipExt": ".tar.gz"
     },
@@ -3478,11 +3484,23 @@ install(false);
     "npm": "9.5.0"
   }
 }
+================ axolotlsay-npm-package.tar.gz/package/run-axlotolsay.js ================
+#!/usr/bin/env node
+
+const { run } = require("./binary");
+run("axlotolsay");
+
 ================ axolotlsay-npm-package.tar.gz/package/run-axolotlsay.js ================
 #!/usr/bin/env node
 
 const { run } = require("./binary");
 run("axolotlsay");
+
+================ axolotlsay-npm-package.tar.gz/package/run-axolotlsayw.js ================
+#!/usr/bin/env node
+
+const { run } = require("./binary");
+run("axolotlsayw");
 
 ================ sha256.sum ================
 CENSORED (see https://github.com/axodotdev/cargo-dist/issues/1477)  axolotlsay-npm-package.tar.gz
@@ -3903,9 +3921,15 @@ CENSORED (see https://github.com/axodotdev/cargo-dist/issues/1477)  source.tar.g
       ],
       "assets": [
         {
-          "id": "axolotlsay-x86_64-pc-windows-msvc-exe-axolotlsay",
-          "name": "axolotlsay",
-          "path": "axolotlsay.exe",
+          "id": "axolotlsay-x86_64-pc-windows-msvc-exe-axlotolsay",
+          "name": "axlotolsay",
+          "path": "axlotolsay.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "axolotlsay-x86_64-pc-windows-msvc-exe-axolotlsayw",
+          "name": "axolotlsayw",
+          "path": "axolotlsayw.exe",
           "kind": "executable"
         }
       ],
@@ -3947,9 +3971,15 @@ CENSORED (see https://github.com/axodotdev/cargo-dist/issues/1477)  source.tar.g
           "kind": "readme"
         },
         {
-          "id": "axolotlsay-x86_64-pc-windows-msvc-exe-axolotlsay",
-          "name": "axolotlsay",
-          "path": "axolotlsay.exe",
+          "id": "axolotlsay-x86_64-pc-windows-msvc-exe-axlotolsay",
+          "name": "axlotolsay",
+          "path": "axlotolsay.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "axolotlsay-x86_64-pc-windows-msvc-exe-axolotlsayw",
+          "name": "axolotlsayw",
+          "path": "axolotlsayw.exe",
           "kind": "executable"
         }
       ],
