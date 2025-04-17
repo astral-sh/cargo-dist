@@ -12,7 +12,7 @@ expression: self.payload
 # option. This file may not be copied, modified, or distributed
 # except according to those terms.
 
-# This runs on Unix shells like {a,ba,da,k,z}sh. It uses the common `local`
+# This runs on Unix shells like bash/dash/ksh/zsh. It uses the common `local`
 # extension. Note: Most shells limit `local` to 1 var per line, contra bash.
 
 # Some versions of ksh have no `local` keyword. Alias it to `typeset`, but
