@@ -25,10 +25,6 @@ has_local() {
 
 has_local 2>/dev/null || alias local=typeset
 
-is_zsh() {
-    [ -n "${ZSH_VERSION-}" ]
-}
-
 set -u
 
 APP_NAME="axolotlsay"
@@ -968,7 +964,6 @@ get_bitness() {
         echo 64
     else
         err "unknown platform bitness"
-        exit 1;
     fi
 }
 
@@ -1003,7 +998,6 @@ get_endianness() {
         echo "${cputype}${suffix_eb}"
     else
         err "unknown platform endianness"
-        exit 1
     fi
 }
 
