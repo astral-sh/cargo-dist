@@ -141,11 +141,14 @@ jobs:
       # (PRs run on the *source* but secrets are usually on the *target* -- that's *good*
       # but also really annoying to build CI around when it needs secrets to work right.)
       - id: plan
+        env:
+          TAG_VAL: ${{ inputs.tag }}
+          REF_VAL: ${{ github.ref_name }}
         run: |
           dist
-          {{%- if dispatch_releases %}} ${{ (inputs.tag && inputs.tag != 'dry-run' && format('host --steps=create --tag={0}', inputs.tag))
+          {{%- if dispatch_releases %}} ${{ (inputs.tag && inputs.tag != 'dry-run' && 'host --steps=create --tag="${TAG_VAL}"')
           {{%- elif release_branch %}} ${{ (!github.event.pull_request && 'host --steps=create --tag=timestamp --force-tag')
-          {{%- else %}} ${{ (!github.event.pull_request && format('host --steps=create --tag={0}', github.ref_name))
+          {{%- else %}} ${{ (!github.event.pull_request && 'host --steps=create --tag="${REF_VAL}"')
           {{%- endif %}}
           {{%- if "axodotdev" in hosting_providers %}} || (env.AXO_RELEASES_TOKEN && 'host --steps=check') {{%- endif %}}
           {{{- " || 'plan' }} --output-format=json > plan-dist-manifest.json" | safe }}}
@@ -318,9 +321,12 @@ jobs:
         run: |
           ${{ matrix.packages_install }}
       - name: Build artifacts
+        env:
+          TAG_FLAG: ${{ needs.plan.outputs.tag-flag }}
+          DIST_ARGS: ${{ matrix.dist_args }}
         run: |
           # Actually do builds and make zips and whatnot
-          dist build ${{ needs.plan.outputs.tag-flag }} --print=linkage --output-format=json ${{ matrix.dist_args }} > dist-manifest.json
+          dist build "${TAG_FLAG}" --print=linkage --output-format=json $DIST_ARGS > dist-manifest.json
           echo "dist ran successfully"
       {{%- if github_attestations is defined and github_attestations %}}
       - name: Attest
@@ -425,8 +431,11 @@ jobs:
           merge-multiple: true
       - id: cargo-dist
         shell: bash
+        env:
+          TAG_FLAG: ${{ needs.plan.outputs.tag-flag }}
+          GLOBAL_ARGS: {{{ global_task.dist_args }}}
         run: |
-          dist build ${{ needs.plan.outputs.tag-flag }} --output-format=json {{{ global_task.dist_args }}} > dist-manifest.json
+          dist build "${TAG_FLAG}" --output-format=json $GLOBAL_ARGS > dist-manifest.json
           echo "dist ran successfully"
 
           # Parse out what we just built and upload it to scratch storage
@@ -555,8 +564,10 @@ jobs:
     {{%- endif %}}
       - id: host
         shell: bash
+        env:
+          TAG_FLAG: ${{ needs.plan.outputs.tag-flag }}
         run: |
-          dist host ${{ needs.plan.outputs.tag-flag }} --steps=upload --steps=release --output-format=json > dist-manifest.json
+          dist host "${TAG_FLAG}" --steps=upload --steps=release --output-format=json > dist-manifest.json
           echo "artifacts uploaded and released successfully"
           cat dist-manifest.json
           echo "manifest=$(jq -c "." dist-manifest.json)" >> "$GITHUB_OUTPUT"
@@ -690,8 +701,10 @@ jobs:
           path: target/distrib/
           merge-multiple: true
       - name: Announce Axo Releases
+        env:
+          TAG_FLAG: ${{ needs.plan.outputs.tag-flag }}
         run: |
-          dist host --steps=announce ${{ needs.plan.outputs.tag-flag }}
+          dist host --steps=announce "${TAG_FLAG}"
     {{%- endif %}}
     {{%- if "github" in hosting_providers and release_phase == "announce" %}}
 {{% include 'ci/github/partials/publish_github.yml' %}}
