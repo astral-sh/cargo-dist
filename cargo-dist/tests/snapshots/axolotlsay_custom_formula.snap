@@ -460,12 +460,15 @@ jobs:
       # but also really annoying to build CI around when it needs secrets to work right.)
       - id: plan
         run: |
-          dist ${{ (!github.event.pull_request && 'host --steps=create --tag=timestamp --force-tag') || 'plan' }} --output-format=json > plan-dist-manifest.json
+          dist ${DIST_ARGS} --output-format=json > plan-dist-manifest.json
           echo "dist ran successfully"
           cat plan-dist-manifest.json
           echo "manifest=$(jq -c "." plan-dist-manifest.json)" >> "$GITHUB_OUTPUT"
           echo "tag=$(jq --raw-output ".announcement_tag" plan-dist-manifest.json)" >> "$GITHUB_OUTPUT"
           echo "tag-flag=--tag=$(jq --raw-output ".announcement_tag" plan-dist-manifest.json) --force-tag" >> "$GITHUB_OUTPUT"
+        env:
+          DIST_ARGS: >-
+            ${{ (!github.event.pull_request && 'host --steps=create --tag=timestamp --force-tag') || 'plan' }}
       - name: "Upload dist-manifest.json"
         uses: actions/upload-artifact@v4
         with:

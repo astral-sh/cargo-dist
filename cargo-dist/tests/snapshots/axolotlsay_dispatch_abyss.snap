@@ -412,10 +412,13 @@ jobs:
       # but also really annoying to build CI around when it needs secrets to work right.)
       - id: plan
         run: |
-          dist ${{ (inputs.tag && inputs.tag != 'dry-run' && format('host --steps=create --tag={0}', inputs.tag)) || (env.AXO_RELEASES_TOKEN && 'host --steps=check') || 'plan' }} --output-format=json > plan-dist-manifest.json
+          dist ${DIST_ARGS} --output-format=json > plan-dist-manifest.json
           echo "dist ran successfully"
           cat plan-dist-manifest.json
           echo "manifest=$(jq -c "." plan-dist-manifest.json)" >> "$GITHUB_OUTPUT"
+        env:
+          DIST_ARGS: >-
+            ${{ (inputs.tag && inputs.tag != 'dry-run' && format('host --steps=create --tag={0}', inputs.tag)) || (env.AXO_RELEASES_TOKEN && 'host --steps=check') || 'plan' }}
       - name: "Upload dist-manifest.json"
         uses: actions/upload-artifact@v4
         with:
