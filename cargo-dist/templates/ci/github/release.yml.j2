@@ -142,9 +142,7 @@ jobs:
       # but also really annoying to build CI around when it needs secrets to work right.)
       - id: plan
         run: |
-          dist ${DIST_ARGS}
-          {{%- if "axodotdev" in hosting_providers %}} || (env.AXO_RELEASES_TOKEN && 'host --steps=check') {{%- endif %}}
-          {{{- " || 'plan' }} --output-format=json > plan-dist-manifest.json" | safe }}}
+          dist ${DIST_ARGS} --output-format=json > plan-dist-manifest.json
           echo "dist ran successfully"
           cat plan-dist-manifest.json
           echo "manifest=$(jq -c "." plan-dist-manifest.json)" >> "$GITHUB_OUTPUT"
@@ -154,10 +152,12 @@ jobs:
           {{%- endif %}}
         env:
           DIST_ARGS: >-
-            {{%- if dispatch_releases %}} ${{ (inputs.tag && inputs.tag != 'dry-run' && format('host --steps=create --tag={0}', inputs.tag))
-            {{%- elif release_branch %}} ${{ (!github.event.pull_request && 'host --steps=create --tag=timestamp --force-tag')
-            {{%- else %}} ${{ (!github.event.pull_request && format('host --steps=create --tag={0}', github.ref_name))
-            {{%- endif %}}
+            {{% if dispatch_releases -%}} ${{ (inputs.tag && inputs.tag != 'dry-run' && format('host --steps=create --tag={0}', inputs.tag))
+            {{%- elif release_branch -%}} ${{ (!github.event.pull_request && 'host --steps=create --tag=timestamp --force-tag')
+            {{%- else -%}} ${{ (!github.event.pull_request && format('host --steps=create --tag={0}', github.ref_name))
+            {{%- endif -%}}
+            {{%- if "axodotdev" in hosting_providers -%}} {{{- " || (env.AXO_RELEASES_TOKEN && 'host --steps=check')" | safe }}} {{%- endif -%}}
+            {{{- " || 'plan' }}" | safe }}}
       - name: "Upload dist-manifest.json"
         uses: {{{actions["actions/upload-artifact"] | safe }}}
         with:
